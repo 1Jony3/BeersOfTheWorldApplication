@@ -1,3 +1,9 @@
 <resources>
-	<string name="app_name">Shift2021Summer</string>
+    <string name="app_name">Save the Earth</string>
+    <string name="name_format">Name: %1$s</string>
+    <string name="dangerous_format">Dangerous: %1$s</string>
+    <string name="weight_format">weight: %1$s</string>
+    <string name="density_format">density: %1$s</string>
+    <string name="temperature_format">temperature: %1$s</string>
+    <string name="button_save">Save</string>
 </resources>
