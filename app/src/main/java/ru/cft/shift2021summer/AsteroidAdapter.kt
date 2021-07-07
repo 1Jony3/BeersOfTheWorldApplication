@@ -30,7 +30,7 @@ class AsteroidAdapter (private val onItemClick: (Asteroid) -> Unit) : RecyclerVi
 class AsteroidHolder(private val onItemClick: (Asteroid) -> Unit, itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val nameText: TextView = itemView.findViewById(R.id.nameText)
-    private val dangerousText: TextView = itemView.findViewById(R.id.dangerousEditText)
+    private val dangerousText: TextView = itemView.findViewById(R.id.dangerousText)
 
     fun bind(asteroid: Asteroid) {
         nameText.text = "Name: " + asteroid.name
