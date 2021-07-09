@@ -1,4 +1,4 @@
-package ru.cft.shift2021summer
+package ru.cft.shift2021summer.feature.asteroid.details.presentation
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
+import ru.cft.shift2021summer.R
+import ru.cft.shift2021summer.feature.asteroid.Asteroid
+
 
 class AsteroidDetailsActivity : AppCompatActivity() {
     companion object {
@@ -22,7 +26,9 @@ class AsteroidDetailsActivity : AppCompatActivity() {
         }
     }
 
-    private lateinit var asteroidRepository: AsteroidRepository
+    private val viewModel: DetailsViewModel by viewModels {
+        DetailsViewModelFactory(application, intent.getLongExtra(EXTRA_ID, 0))
+    }
 
     private lateinit var nameText: TextView
     private lateinit var weightText: TextView
@@ -35,8 +41,6 @@ class AsteroidDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_asteroid_details)
 
-        asteroidRepository = (application as BreakingBadApplication).asteroidRepository
-
         nameText = findViewById(R.id.nameText)
         weightText = findViewById(R.id.weightText)
         densityText = findViewById(R.id.densityText)
@@ -44,27 +48,27 @@ class AsteroidDetailsActivity : AppCompatActivity() {
         dangerousEditText = findViewById(R.id.dangerousEditText)
         saveButton = findViewById(R.id.saveButton)
 
-        val id = intent.getLongExtra(EXTRA_ID, 0)
-        val asteroid = asteroidRepository.get(id)
+        viewModel.asteroid.observe(this, ::bindAsteroid)
+        viewModel.closeScreenEvent.observe(this) { closeScreen() }
+    }
 
-        if (asteroid != null) {
-            nameText.text = getString(R.string.name_format, asteroid.name)
-            weightText.text = getString(R.string.weight_format, asteroid.weight)
-            densityText.text = getString(R.string.density_format, asteroid.density)
-            temperatureText.text = getString(R.string.temperature_format, asteroid.temperature.joinToString(", "))
-            dangerousEditText.setText(asteroid.dangerous)
+    private fun bindAsteroid(asteroid: Asteroid){
+        nameText.text = getString(R.string.name_format, asteroid.name)
+        weightText.text = getString(R.string.weight_format, asteroid.weight)
+        densityText.text = getString(R.string.density_format, asteroid.density)
+        temperatureText.text = getString(R.string.temperature_format, asteroid.temperature.joinToString(", "))
+        dangerousEditText.setText(asteroid.dangerous)
 
-            saveButton.setOnClickListener {
-                val updatedAsteroid : Asteroid
-                if (dangerousEditText.text.toString() == "") updatedAsteroid =asteroid.copy(dangerous = "Unknown")
-                else updatedAsteroid = asteroid.copy(dangerous = dangerousEditText.text.toString())
-                asteroidRepository.set(updatedAsteroid)
-                val toast = Toast.makeText(this, "save", Toast.LENGTH_LONG)
-                toast.show()
-                finish()
-            }
-        } else {
-            finish()
+        saveButton.setOnClickListener {
+            val updatedAsteroid = if (dangerousEditText.text.toString() == "") asteroid.copy(dangerous = "Unknown")
+            else asteroid.copy(dangerous = dangerousEditText.text.toString())
+            viewModel.saveAsteroid(updatedAsteroid)
+            val toast = Toast.makeText(this, "save", Toast.LENGTH_LONG)
+            toast.show()
         }
+    }
+
+    private fun  closeScreen() {
+        finish()
     }
 }

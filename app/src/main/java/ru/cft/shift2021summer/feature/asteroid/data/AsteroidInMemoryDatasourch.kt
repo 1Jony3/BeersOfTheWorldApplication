@@ -1,6 +1,19 @@
-package ru.cft.shift2021summer
+package ru.cft.shift2021summer.feature.asteroid.data
 
-class AsteroidRepository {
+import ru.cft.shift2021summer.feature.asteroid.Asteroid
+
+interface AsteroidInMemoryDatasource {
+
+    fun getAll(): List<Asteroid>
+
+    fun get(id: Long): Asteroid?
+
+    fun set(character: Asteroid)
+
+}
+
+class AsteroidInMemoryDatasourceImpl : AsteroidInMemoryDatasource {
+
     private val asteroids = mutableListOf(
         Asteroid(
             id = 1,
@@ -68,12 +81,11 @@ class AsteroidRepository {
     )
 
 
-    fun getAll(): List<Asteroid> = asteroids
+    override fun getAll(): List<Asteroid> = asteroids
 
-    fun get(id: Long): Asteroid? = asteroids.firstOrNull { it.id == id }
+    override fun get(id: Long): Asteroid? = asteroids.firstOrNull { it.id == id }
 
-
-    fun set(asteroid: Asteroid) {
+    override fun set(asteroid: Asteroid) {
         val asteroidIndex = asteroids.indexOfFirst { it.id == asteroid.id }
         asteroids[asteroidIndex] = asteroid
     }
