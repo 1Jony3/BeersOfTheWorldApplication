@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">Save the Earth</string>
+    <string name="app_name">Breweries of the world</string>
     <string name="name_format">Name: %1$s</string>
-    <string name="dangerous_format">Dangerous: %1$s</string>
-    <string name="weight_format">weight: %1$s</string>
-    <string name="density_format">density: %1$s</string>
-    <string name="temperature_format">temperature: %1$s</string>
+    <string name="tagline_format">Tagline: %1$s</string>
+    <string name="first_brewed_format">First brewed: %1$s</string>
+    <string name="description_format">Description: %1$s</string>
     <string name="button_save">Save</string>
+    <string name="button_add">Add</string>
 </resources>
